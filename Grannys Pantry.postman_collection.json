@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "1ed211c2-9040-461e-ad29-fcd97287e2f2",
+		"name": "Grannys Pantry",
+		"description": "Pantry is a free service that provides perishable data storage for small projects. Data is securely stored for as long as you and your users need it and is deleted after a period of inactivity. Simply use the restful API to post JSON objects and we'll take care of the rest.\n\nIt was built to provide a simple, re-usable storage solution for smaller sized projects. It was created by developers for developers, to be there when you need it and to help you rapidly prototype your next project.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pantry",
+			"item": [
+				{
+					"name": "Get Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Check if request status is OK",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Check if Pantry API path variable is used in the URL",
+									"pm.test(\"Pantry API path variable used\", function () {",
+									"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"pantry_api_path\"));",
+									"});",
+									"",
+									"//Check if Pantry ID variable is used in the URL",
+									"pm.test(\"Pantry id variable used\", function () {",
+									"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"pantry_id\"));",
+									"});",
+									"",
+									"//Check if Basket name variable is used in the URL",
+									"//The .search() method returns -1 by default if no match found for \"basket\" in the URL (e.g. for getting account details)",
+									" if(String(pm.request.url).search(\"basket\") != -1){",
+									"pm.test(\"Basket name variable used when needed\", function () {",
+									"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"basket_name\"));",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://getpantry.cloud/apiv1/pantry/b54e5495-ed73-4c63-b3b4-e4426f4e8014",
+							"protocol": "https",
+							"host": [
+								"getpantry",
+								"cloud"
+							],
+							"path": [
+								"apiv1",
+								"pantry",
+								"b54e5495-ed73-4c63-b3b4-e4426f4e8014"
+							]
+						},
+						"description": "Given a PantryID, return the details of the pantry, including a list of baskets currently stored inside it."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Basket",
+			"item": [
+				{
+					"name": "Create basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"derp\": \"otvosbasket\",\n\t\"testPayload\": true,\n\t\"keysLength\": 3\n}"
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Given a basket name as provided in the url, this will either create a new basket inside your pantry, or replace an existing one."
+					},
+					"response": []
+				},
+				{
+					"name": "Fill basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"fruits\": [\"apple\", \"banana\", \"peach\"]\n}"
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Given a basket name, this will update the existing contents and return the contents of the newly updated basket. This operation performs a deep merge and will overwrite the values of any existing keys, or append values to nested objects or arrays."
+					},
+					"response": []
+				},
+				{
+					"name": "Check basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://getpantry.cloud/apiv1/pantry/b54e5495-ed73-4c63-b3b4-e4426f4e8014/basket/otvosbasket",
+							"protocol": "https",
+							"host": [
+								"getpantry",
+								"cloud"
+							],
+							"path": [
+								"apiv1",
+								"pantry",
+								"b54e5495-ed73-4c63-b3b4-e4426f4e8014",
+								"basket",
+								"otvosbasket"
+							]
+						},
+						"description": "Given a basket name, return the full contents of the basket."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Delete the entire basket. Warning, this action cannot be undone."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Restore Basket",
+			"item": [
+				{
+					"name": "Create new basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"derp\": \"otvosbasket\",\n\t\"testPayload\": true,\n\t\"keysLength\": 3\n}"
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Given a basket name as provided in the url, this will either create a new basket inside your pantry, or replace an existing one."
+					},
+					"response": []
+				},
+				{
+					"name": "Fill basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"fruits\": [\"körte\"]\n}"
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Given a basket name, this will update the existing contents and return the contents of the newly updated basket. This operation performs a deep merge and will overwrite the values of any existing keys, or append values to nested objects or arrays."
+					},
+					"response": []
+				},
+				{
+					"name": "Get content of basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}/pantry/{{pantry_id}}/basket/{{basket_name}} ",
+							"host": [
+								"{{pantry_api_path}}"
+							],
+							"path": [
+								"pantry",
+								"{{pantry_id}}",
+								"basket",
+								"{{basket_name}} "
+							]
+						},
+						"description": "Delete the entire basket. Warning, this action cannot be undone."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"pm.test(\"Content-Type is present\", function () {",
+					"    pm.response.to.have.header(\"Content-Type\");",
+					"});"
+				]
+			}
+		}
+	]
+}
